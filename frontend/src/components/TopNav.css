@@ -1,0 +1,63 @@
+/* Use the imported fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Pattaya&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 0px 0px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Brand section */
+.brand {
+  font-family: 'Pattaya', sans-serif;
+  font-size: 36px;
+  color: #2c3e50;
+}
+
+.brand small {
+  display: block;
+  font-size: 12px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 500;
+  color: #7f8c8d;
+  margin-top: 2px;
+}
+
+/* Switch buttons */
+.nav-switch .switch-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: #34495e;
+  transition: background-color 0.2s;
+}
+
+.nav-switch .switch-active {
+  background-color: #2980b9;
+  color: #fff;
+}
+
+/* Logout section */
+.nav-icons .logout-btn {
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  align-items: center;
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 0px 0px;
+  border: none;
+  border-radius: 35px;
+  cursor: pointer;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.logout-icon {
+  font-size: 18px;
+}
