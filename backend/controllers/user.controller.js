@@ -4,9 +4,9 @@ import { User } from "../models/user.model.js";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
-  const { name,email, password, PhoneNumber } = req.body;
+  const { Name,email, password, PhoneNumber } = req.body;
 
-  if (!name || !email || !password) {
+  if (!Name || !email || !password) {
     res.status(400);
     throw new Error("Please fill in all fields");
   }
@@ -18,7 +18,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.create({
-    name,
+    Name,
     email,
     password,
     PhoneNumber
@@ -27,7 +27,7 @@ export const registerUser = asyncHandler(async (req, res) => {
   if (user) {
     res.status(201).json({
       _id: user._id,
-      name: user.name,
+      Name: user.Name,
       email: user.email,
       PhoneNumber: user.PhoneNumber
       
@@ -49,7 +49,7 @@ export const loginUser = asyncHandler(async (req, res) => {
     res.status(200).json({
       user:{
         _id: user._id,
-        name: user.name,
+        Name: user.Name,
         email: user.email,
         PhoneNumber: user.PhoneNumber,
         
