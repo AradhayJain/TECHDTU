@@ -9,36 +9,73 @@ export default function LoginPage({ setIsAuthenticated }) {
     const [showForgot, setShowForgot] = useState(false);
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
-    const [forgotEmail, setForgotEmail] = useState("");
-    
-    // 🔸 Added new states for register passwords
     const [regPassword, setRegPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [forgotEmail, setForgotEmail] = useState("");
 
     const navigate = useNavigate();
 
-    const handleLoginSubmit = (e) => {
+    // ✅ LOGIN (backend expects "Email", "Password")
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        if (email === "test@example.com" && password === "password") {
-            setIsAuthenticated(true);
-            navigate("/worker");
-        } else {
-            alert("Invalid credentials");
+        try {
+            const response = await fetch("http://localhost:9001/api/users/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Email: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Login successful");
+                setIsAuthenticated(true);
+                navigate("/worker");
+            } else {
+                alert(data.message || "Invalid credentials");
+            }
+        } catch (err) {
+            console.error("Login error:", err);
+            alert("Something went wrong during login.");
         }
     };
 
-    const handleRegisterSubmit = (e) => {
+    // ✅ REGISTER (backend expects "Name", "Email", "Password", "PhoneNumber")
+    const handleRegisterSubmit = async (e) => {
         e.preventDefault();
 
-        // 🔸 Password match validation
         if (regPassword !== confirmPassword) {
             alert("Passwords do not match");
             return;
         }
 
-        // 🔸 Registration logic placeholder
-        alert(`Registered successfully with Name: ${name}, Email: ${email}, Phone: ${phone}`);
-        setShowRegister(false);
+        try {
+            const response = await fetch("http://localhost:9001/api/users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Name: name,
+                    Email: email,
+                    password: regPassword,
+                    PhoneNumber: phone,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Registration successful! Please login.");
+                setShowRegister(false);
+            } else {
+                alert(data.message || "Registration failed");
+            }
+        } catch (err) {
+            console.error("Registration error:", err);
+            alert("Something went wrong during registration.");
+        }
     };
 
     const handleForgotSubmit = (e) => {
@@ -49,11 +86,12 @@ export default function LoginPage({ setIsAuthenticated }) {
 
     return (
         <div className="login-page">
+            {/* 🔐 LOGIN FORM */}
             {!showRegister && !showForgot && (
                 <form className="login-form" onSubmit={handleLoginSubmit}>
                     <h2>Login</h2>
                     <div>
-                        <label>Email ID:</label>
+                        <label>Email:</label>
                         <input
                             type="email"
                             value={email}
@@ -72,16 +110,13 @@ export default function LoginPage({ setIsAuthenticated }) {
                     </div>
                     <button type="submit">Login</button>
                     <div className="options">
-                        <button type="button" onClick={() => setShowForgot(true)}>
-                            Forgot Password
-                        </button>
-                        <button type="button" onClick={() => setShowRegister(true)}>
-                            Register
-                        </button>
+                        <button type="button" onClick={() => setShowForgot(true)}>Forgot Password</button>
+                        <button type="button" onClick={() => setShowRegister(true)}>Register</button>
                     </div>
                 </form>
             )}
 
+            {/* 📝 REGISTER FORM */}
             {showRegister && (
                 <form className="register-form" onSubmit={handleRegisterSubmit}>
                     <h2>Register</h2>
@@ -95,7 +130,7 @@ export default function LoginPage({ setIsAuthenticated }) {
                         />
                     </div>
                     <div>
-                        <label>Email ID:</label>
+                        <label>Email:</label>
                         <input
                             type="email"
                             value={email}
@@ -112,7 +147,6 @@ export default function LoginPage({ setIsAuthenticated }) {
                             required
                         />
                     </div>
-                    {/* 🔸 New Password fields */}
                     <div>
                         <label>Password:</label>
                         <input
@@ -132,17 +166,16 @@ export default function LoginPage({ setIsAuthenticated }) {
                         />
                     </div>
                     <button type="submit">Register</button>
-                    <button type="button" onClick={() => setShowRegister(false)}>
-                        Back to Login
-                    </button>
+                    <button type="button" onClick={() => setShowRegister(false)}>Back to Login</button>
                 </form>
             )}
 
+            {/* ❓ FORGOT PASSWORD FORM (Mock) */}
             {showForgot && (
                 <form className="forgot-form" onSubmit={handleForgotSubmit}>
                     <h2>Forgot Password</h2>
                     <div>
-                        <label>Email ID:</label>
+                        <label>Email:</label>
                         <input
                             type="email"
                             value={forgotEmail}
@@ -151,9 +184,7 @@ export default function LoginPage({ setIsAuthenticated }) {
                         />
                     </div>
                     <button type="submit">Submit</button>
-                    <button type="button" onClick={() => setShowForgot(false)}>
-                        Back to Login
-                    </button>
+                    <button type="button" onClick={() => setShowForgot(false)}>Back to Login</button>
                 </form>
             )}
         </div>
