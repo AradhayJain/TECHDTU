@@ -38,33 +38,33 @@ app.get("/", (req, res) => {
 
 // Create HTTP server and attach Socket.IO
 const server = http.createServer(app);
-const io = new Server(server, {
-  cors: corsOptions,
-});
+// const io = new Server(server, {
+//   cors: corsOptions,
+// });
 
 // Socket.IO connection handler
-io.on("connection", (socket) => {
-  console.log("Socket.IO client connected:", socket.id);
+// io.on("connection", (socket) => {
+//   console.log("Socket.IO client connected:", socket.id);
 
-  socket.on("send-features", async (data) => {
-    const userId = data.user_id; // You can also pass this via auth/session
+//   socket.on("send-features", async (data) => {
+//     const userId = data.user_id; // You can also pass this via auth/session
 
-    predictWithWebSocket(
-      data.data,
-      userId,
-      (result) => {
-        socket.emit("prediction-result", result);
-      },
-      (err) => {
-        socket.emit("prediction-error", { error: err.message });
-      }
-    );
-  });
+//     predictWithWebSocket(
+//       data.data,
+//       userId,
+//       (result) => {
+//         socket.emit("prediction-result", result);
+//       },
+//       (err) => {
+//         socket.emit("prediction-error", { error: err.message });
+//       }
+//     );
+//   });
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected:", socket.id);
-  });
-});
+//   socket.on("disconnect", () => {
+//     console.log("Client disconnected:", socket.id);
+//   });
+// });
 
 // Start the server
 server.listen(PORT, () => {
