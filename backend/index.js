@@ -8,8 +8,8 @@ import { Server } from "socket.io";
 
 import MongoDB from "./utils/DB.js";
 import userRoutes from "./routes/user.routes.js";
-import dataRoutes from "./routes/data.routes.js";
-import { predictWithWebSocket } from "./controllers/data.controller.js"; // Your async function
+// import dataRoutes from "./routes/data.routes.js";
+//import { predictWithWebSocket } from "./controllers/data.controller.js"; // Your async function
 
 dotenv.config();
 
@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use("/api/users", userRoutes);
-app.use("/api/data", dataRoutes);
+
 
 // Health check
 app.get("/", (req, res) => {
