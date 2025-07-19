@@ -4,14 +4,14 @@ import { User } from "../models/user.model.js";
 
 // Register User
 export const registerUser = asyncHandler(async (req, res) => {
-  const { Name,email, password, PhoneNumber } = req.body;
+  const { Name,Email, password, PhoneNumber } = req.body;
 
-  if (!Name || !email || !password) {
+  if (!Name || !Email || !password) {
     res.status(400);
     throw new Error("Please fill in all fields");
   }
 
-  const userExists = await User.findOne({ email });
+  const userExists = await User.findOne({ Email });
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
@@ -19,7 +19,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   const user = await User.create({
     Name,
-    email,
+    Email,
     password,
     PhoneNumber
   });
@@ -28,7 +28,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     res.status(201).json({
       _id: user._id,
       Name: user.Name,
-      email: user.email,
+      Email: user.Email,
       PhoneNumber: user.PhoneNumber
       
     });
@@ -40,9 +40,9 @@ export const registerUser = asyncHandler(async (req, res) => {
 
 // Login User
 export const loginUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { Email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ Email });
 
   if (user && (await user.matchPassword(password))) {
     const token = generateToken(user._id);
@@ -50,7 +50,7 @@ export const loginUser = asyncHandler(async (req, res) => {
       user:{
         _id: user._id,
         Name: user.Name,
-        email: user.email,
+        Email: user.Email,
         PhoneNumber: user.PhoneNumber,
         
       },
